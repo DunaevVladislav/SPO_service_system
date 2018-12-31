@@ -12,7 +12,7 @@ using namespace std;
  */
 int main() {
     initial();
-
+    add_request();
     finalize();
     return 0;
 }

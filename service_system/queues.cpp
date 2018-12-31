@@ -1,7 +1,6 @@
 ///Файл с реализацией функций для работы с очередями заявок
 
 #include "queues.h"
-#include "request.h"
 #include <queue>
 #include <stdio.h>
 
@@ -39,4 +38,18 @@ void finalize_queues(){
     }
     delete[] queues_request;
     queues_request = nullptr;
+}
+
+/**
+ * Добавить заявку в очереди
+ * Заявка добавляем в очередь с наименьшим числом заявок
+ * @param new_request Добавляемая заявка
+ */
+void add_to_queue(request *&new_request) {
+    int index_queue_min_size = 0;
+    for(int i = 1; i < queues_count; ++i){
+        if (queues_request[i]->size() < queues_request[index_queue_min_size]->size())
+            index_queue_min_size = i;
+    }
+    queues_request[index_queue_min_size]->push(new_request);
 }

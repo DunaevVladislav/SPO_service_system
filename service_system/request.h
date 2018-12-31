@@ -1,5 +1,7 @@
 ///Заголовочный файл описывающий заявку
 
+#pragma once
+
 
  /**
  * Стурктура описывающая заявку
@@ -40,3 +42,10 @@ struct request{
     request(const int &start_time, const int &service_time, const int &priority):
             start_time(start_time), service_time(service_time), spent_time(0), close_time(-1), priority(priority){};
 };
+
+/**
+ * Создать заявку со случайными параметрами
+ * @param current_time
+ * @return
+ */
+request* create_random_request(const int& current_time);

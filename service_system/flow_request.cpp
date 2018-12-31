@@ -1,7 +1,6 @@
 ///Файл с реализацией функций для работы с потоком заявок
 
 #include "flow_request.h"
-#include "request.h"
 #include <vector>
 
 
@@ -28,4 +27,12 @@ void finalize_flow(){
     }
     delete flow_request;
     flow_request = nullptr;
+}
+
+/**
+ * Добавить заявку в поток заявок
+ * @param new_request добавляемая заявка
+ */
+void add_to_flow(request*& new_request){
+    flow_request->push_back(new_request);
 }

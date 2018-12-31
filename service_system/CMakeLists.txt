@@ -3,4 +3,4 @@ project(service_system)
 
 set(CMAKE_CXX_STANDARD 14)
 
-add_executable(service_system service_system.cpp)
+add_executable(service_system main.cpp сonstants.h request.cpp request.h queues.cpp queues.h flow_request.cpp flow_request.h utils.cpp utils.h)

@@ -4,6 +4,7 @@
 #include "flow_request.h"
 #include "queues.h"
 #include <stdlib.h>
+#include <unistd.h>
 #include <time.h>
 #include <chrono>
 
@@ -47,4 +48,15 @@ void add_request(){
     request* new_request = create_random_request(past_time());
     add_to_flow(new_request);
     add_to_queue(new_request);
+}
+
+/**
+ * Функция для управления программой
+ */
+void control(){
+    start_generate_request(&add_request);
+    for(int i = 0; i < 100; ++i){
+        output_flow();
+        usleep(1000L*100);
+    }
 }

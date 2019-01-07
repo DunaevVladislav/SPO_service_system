@@ -2,11 +2,20 @@
 
 #pragma once
 
+/**
+ * Последний неиспользованный id
+ */
+extern unsigned int _not_used_id;
 
  /**
  * Стурктура описывающая заявку
  */
 struct request{
+    /**
+     * Id заявки
+     */
+    unsigned int id;
+
     /**
      * Время начало обсулживания в мс с момента запуска системы
      */
@@ -40,7 +49,7 @@ struct request{
      * @param priority приоритет
      */
     request(const int &start_time, const int &service_time, const int &priority):
-            start_time(start_time), service_time(service_time), spent_time(0), close_time(-1), priority(priority){};
+            id(_not_used_id++), start_time(start_time), service_time(service_time), spent_time(0), close_time(-1), priority(priority){};
 };
 
 /**

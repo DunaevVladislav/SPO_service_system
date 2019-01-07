@@ -4,7 +4,12 @@
 /**
  * Среднее время между формированием двух заявок в мс
  */
-const int REQUEST_PERIOD = 100;
+const int REQUEST_PERIOD = 10;
+
+/**
+ * Квант времени в мс
+ */
+extern int QUANTUM_TIME;
 
 /**
  * Минимальный приоритет заявки

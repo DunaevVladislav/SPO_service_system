@@ -3,7 +3,9 @@
 #include "utils.h"
 #include "flow_request.h"
 #include "queues.h"
+#include "constants.h"
 #include <stdlib.h>
+#include <stdio.h>
 #include <unistd.h>
 #include <time.h>
 #include <chrono>
@@ -16,11 +18,25 @@ using namespace std;
 chrono::time_point<chrono::system_clock> start_time;
 
 /**
+ * Квант времени в мс
+ */
+int QUANTUM_TIME = 10;
+
+/**
+ * Инициализация кванта времени
+ */
+void _initial_quantun(){
+    printf("Квант времени: ");
+    scanf("%d", &QUANTUM_TIME);
+}
+
+/**
  * Инициализация
  */
 void initial(){
     start_time = chrono::system_clock::now();
     srand(time(0));
+    _initial_quantun();
     initial_flow();
     initial_queues();
 }

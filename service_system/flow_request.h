@@ -18,3 +18,8 @@ void finalize_flow();
  * @param new_request добавляемая заявка
  */
 void add_to_flow(request*& new_request);
+
+/**
+ * Выводит информаицию о потоке
+ */
+void output_flow();

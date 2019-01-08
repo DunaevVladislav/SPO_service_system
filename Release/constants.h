@@ -12,7 +12,7 @@ const int REQUEST_PERIOD = 135;
 extern int QUANTUM_TIME;
 
 /**
- * Минимальный приоритет заявки--
+ * Минимальный приоритет заявки
  */
 const int MIN_REQUEST_PRIORITY = 0;
 

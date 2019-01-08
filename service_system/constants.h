@@ -29,4 +29,4 @@ const int MIN_SERVICE_TIME = 1;
 /**
  * Максимальное время обслуживания заявки в мс
  */
-const int MAX_SERVICE_TIME = 2000;
+const int MAX_SERVICE_TIME = 500;

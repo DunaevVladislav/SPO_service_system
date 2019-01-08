@@ -2,7 +2,7 @@
 
 #include "queues.h"
 #include "constants.h"
-#include <queue>
+#include <list>
 #include <stdio.h>
 #include <signal.h>
 #include <sys/time.h>
@@ -16,7 +16,7 @@ unsigned int queues_count;
  * Очереди заявок
  * Массив очередей заявок
  */
-std::queue<request*>** queues_request = nullptr;
+std::list<request*>** queues_request = nullptr;
 
 /**
  * Обслужить заявку (в течение одного кванта)
@@ -33,7 +33,7 @@ void _service_request(int){
             index_req_max_prior = i;
     }
     request*& handled_request = queues_request[index_req_max_prior]->front();
-    queues_request[index_req_max_prior]->pop();
+    queues_request[index_req_max_prior]->pop_front();
     handled_request->spent_time += QUANTUM_TIME;
     if (handled_request->spent_time >= handled_request->service_time){
         close_request(handled_request);
@@ -48,9 +48,9 @@ void _service_request(int){
 void initial_queues(){
     printf("Количество очередей: ");
     scanf("%u", &queues_count);
-    queues_request = new std::queue<request*>*[queues_count];
+    queues_request = new std::list<request*>*[queues_count];
     for(int i = 0; i < queues_count; ++i){
-        queues_request[i] = new std::queue<request*>();
+        queues_request[i] = new std::list<request*>();
     }
     signal(SIGALRM, _service_request);
 }
@@ -78,7 +78,7 @@ void add_to_queue(request *&new_request) {
         if (queues_request[i]->size() < queues_request[index_queue_min_size]->size())
             index_queue_min_size = i;
     }
-    queues_request[index_queue_min_size]->push(new_request);
+    queues_request[index_queue_min_size]->push_back(new_request);
 }
 
 /**
@@ -95,4 +95,18 @@ void start_service(){
 void stop_service(){
     struct itimerval tval = {0 , 0 , 0 , 0};
     setitimer(ITIMER_REAL, &tval, nullptr);
+}
+
+/**
+ * Вывести информацию об очередях
+ */
+void output_queues(){
+    puts("Очередь: id заявок");
+    for(int i = 0; i < queues_count; ++i){
+        printf("№%d: ", i + 1);
+        for(request*& req:*queues_request[i]){
+            printf("%d ", req->id);
+        }
+        puts("");
+    }
 }

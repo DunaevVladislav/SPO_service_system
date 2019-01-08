@@ -30,3 +30,8 @@ void start_service();
  * Остановить обслуживание заявок
  */
 void stop_service();
+
+/**
+ * Вывести информацию об очередях
+ */
+void output_queues();

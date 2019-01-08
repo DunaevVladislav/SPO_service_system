@@ -74,11 +74,13 @@ void control(){
     start_service();
     for(int i = 0; i < 100; ++i){
         output_flow();
+        output_queues();
         usleep(1000L*50);
     }
     stop_generate_request();
     while(1){
         output_flow();
+        output_queues();
         usleep(1000L*50);
     }
 }

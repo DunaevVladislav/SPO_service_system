@@ -9,6 +9,9 @@
 #include <unistd.h>
 #include <time.h>
 #include <chrono>
+#include <iostream>
+#include <termios.h>
+#include <signal.h>
 
 using namespace std;
 
@@ -66,21 +69,57 @@ void add_request(){
     add_to_queue(new_request);
 }
 
+void output_menu(){
+    puts("\nНажмите 1, чтобы прекратить генерацию заявок");
+    puts("Нажмите 2, чтобы завершить работу программы");
+}
+
+/**
+ * Был ли нажаты ctrl+c
+ */
+bool was_input = false;
+
+/**
+ * Обработчик сигнала завершения программы
+ */
+void signal_handler(int)
+{
+    was_input = true;
+}
+
 /**
  * Функция для управления программой
  */
 void control(){
     start_generate_request(&add_request);
     start_service();
-    for(int i = 0; i < 100; ++i){
-        output_flow();
-        output_queues();
-        usleep(1000L*50);
-    }
-    stop_generate_request();
+    signal(SIGINT, signal_handler);
     while(1){
         output_flow();
         output_queues();
-        usleep(1000L*50);
+        puts("Нажите ctrl+c чтобы остановить программу");
+        usleep(1000LL * 100);
+        if (was_input){
+            stop_generate_request();
+            stop_service();
+            output_menu();
+            int num;
+            scanf("%d", &num);
+            was_input = false;
+            switch (num){
+                case 1:{
+                    start_service();
+                    continue;
+                }
+                case 2:{
+                    return;
+                }
+                default:
+                    resume_generate_request();
+                    start_service();
+                    continue;
+            }
+        }
+
     }
 }

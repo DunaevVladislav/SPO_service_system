@@ -20,3 +20,13 @@ void finalize_queues();
  * @param new_request Добавляемая заявка
  */
 void add_to_queue(request*& new_request);
+
+/**
+ * Запустить обслуживание заявок
+ */
+void start_service();
+
+/**
+ * Остановить обслуживание заявок
+ */
+void stop_service();

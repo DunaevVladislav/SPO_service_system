@@ -4,7 +4,7 @@
 /**
  * Среднее время между формированием двух заявок в мс
  */
-const int REQUEST_PERIOD = 10;
+const int REQUEST_PERIOD = 100;
 
 /**
  * Квант времени в мс

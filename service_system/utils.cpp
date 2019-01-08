@@ -71,8 +71,14 @@ void add_request(){
  */
 void control(){
     start_generate_request(&add_request);
+    start_service();
     for(int i = 0; i < 100; ++i){
         output_flow();
-        usleep(1000L*100);
+        usleep(1000L*50);
+    }
+    stop_generate_request();
+    while(1){
+        output_flow();
+        usleep(1000L*50);
     }
 }

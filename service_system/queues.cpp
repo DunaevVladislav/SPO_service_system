@@ -1,9 +1,11 @@
 ///Файл с реализацией функций для работы с очередями заявок
 
 #include "queues.h"
+#include "constants.h"
 #include <queue>
 #include <stdio.h>
-
+#include <signal.h>
+#include <sys/time.h>
 
 /**
  * Количество очередей
@@ -17,6 +19,30 @@ unsigned int queues_count;
 std::queue<request*>** queues_request = nullptr;
 
 /**
+ * Обслужить заявку (в течение одного кванта)
+ */
+void _service_request(int){
+    int index_req_max_prior;
+    for(index_req_max_prior = 0; index_req_max_prior < queues_count; ++index_req_max_prior){
+        if (!queues_request[index_req_max_prior]->empty()) break;
+    }
+    if (index_req_max_prior == queues_count) return;
+    for(int i = 1; i < queues_count; ++i){
+        if (queues_request[i]->empty()) continue;
+        if (queues_request[i]->front()->priority > queues_request[index_req_max_prior]->front()->priority)
+            index_req_max_prior = i;
+    }
+    request*& handled_request = queues_request[index_req_max_prior]->front();
+    queues_request[index_req_max_prior]->pop();
+    handled_request->spent_time += QUANTUM_TIME;
+    if (handled_request->spent_time >= handled_request->service_time){
+        close_request(handled_request);
+    }else{
+        add_to_queue(handled_request);
+    }
+}
+
+/**
  * Инициализация очередей
  */
 void initial_queues(){
@@ -26,6 +52,7 @@ void initial_queues(){
     for(int i = 0; i < queues_count; ++i){
         queues_request[i] = new std::queue<request*>();
     }
+    signal(SIGALRM, _service_request);
 }
 
 /**
@@ -52,4 +79,20 @@ void add_to_queue(request *&new_request) {
             index_queue_min_size = i;
     }
     queues_request[index_queue_min_size]->push(new_request);
+}
+
+/**
+ * Запустить обслуживание заявок
+ */
+void start_service(){
+    struct itimerval tval = {0,  1000LL*QUANTUM_TIME, 0 , 1000LL*QUANTUM_TIME};
+    setitimer(ITIMER_REAL, &tval, nullptr);
+}
+
+/**
+ * Остановить обслуживание заявок
+ */
+void stop_service(){
+    struct itimerval tval = {0 , 0 , 0 , 0};
+    setitimer(ITIMER_REAL, &tval, nullptr);
 }

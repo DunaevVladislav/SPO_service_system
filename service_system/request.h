@@ -58,3 +58,9 @@ struct request{
  * @return
  */
 request* create_random_request(const int& current_time);
+
+/**
+ * Закрывает заявку
+ * @param closing_request закрываемая заявка
+ */
+void close_request(request*& closing_request);

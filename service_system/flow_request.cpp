@@ -55,7 +55,8 @@ void add_to_flow(request*& new_request){
  */
 void output_flow(){
     if (flow_request->size() < 50) system("clear");
-    puts("Список заявок:\n");
+    else puts("\n\n\n");
+    puts("Список заявок:");
     printf("%-5s %-20s %-35s %-35s %-25s %-35s\n", "id", "Время", "Время необходимое", "Время потраченное", "Приоритет", "Обсужена ли");
     printf("%-5s %-23s %-33s %-33s %-16s %-22s\n", "", "создания", "на обслуживание", "на обслуживание", "", "заявка?");
     for (auto &req : *flow_request) {

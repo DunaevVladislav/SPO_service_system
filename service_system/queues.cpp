@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <signal.h>
 #include <sys/time.h>
+#include <cstdlib>
 
 /**
  * Количество очередей
@@ -22,9 +23,14 @@ std::list<request*>** queues_request = nullptr;
  * Обслужить заявку (в течение одного кванта)
  */
 void _service_request(int){
-    int index_req_max_prior;
-    for(index_req_max_prior = 0; index_req_max_prior < queues_count; ++index_req_max_prior){
-        if (!queues_request[index_req_max_prior]->empty()) break;
+    int index_req_max_prior = -1;
+    if (rand()%7 == 0){
+        index_req_max_prior = rand() % queues_count;
+    }
+    if (index_req_max_prior == -1 || queues_request[index_req_max_prior]->empty()){
+        for(index_req_max_prior = 0; index_req_max_prior < queues_count; ++index_req_max_prior){
+            if (!queues_request[index_req_max_prior]->empty()) break;
+        }
     }
     if (index_req_max_prior == queues_count) return;
     for(int i = 1; i < queues_count; ++i){

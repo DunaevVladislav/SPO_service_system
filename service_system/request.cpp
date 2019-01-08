@@ -26,6 +26,6 @@ request *create_random_request(const int &current_time) {
  * @param closing_request закрываемая заявка
  */
 void close_request(request*& closing_request){
-    closing_request->service_time = closing_request->spent_time;
+    closing_request->spent_time= closing_request->service_time ;
     closing_request->close_time = past_time();
 }
